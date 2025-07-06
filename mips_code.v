@@ -57,7 +57,7 @@ always @(posedge clk1 ) begin             // 1st stage - Instruction Fetch (IF)
     end
 end
 
-always @(posedge clk2 ) begin             // 2nd stage - Instruction Decode (ID)
+always @(posedge clk2 ) begin             // 2nd stage - Instruction Decode & Register Read (ID)
     if(HALTED == 0) 
     begin
         if (IF_ID_IR[25:21] == 5'b00000) begin
@@ -87,7 +87,7 @@ always @(posedge clk2 ) begin             // 2nd stage - Instruction Decode (ID)
     end
 end
 
-always @(posedge clk1 ) begin             // 3rd stage - Execution (EX) 
+always @(posedge clk1 ) begin             // 3rd stage - Execution/ALU (EX) 
     if(HALTED == 0)
     begin
         EX_MEM_type  <= ID_EX_type ;
@@ -132,7 +132,7 @@ always @(posedge clk1 ) begin             // 3rd stage - Execution (EX)
     end
 end
 
-always @(posedge clk2 ) begin             // 4th stage - Memory (MEM)
+always @(posedge clk2 ) begin             // 4th stage - Memory Access (MEM)
     if(HALTED == 0) begin
         MEM_WB_type <= #2 EX_MEM_type ;
         MEM_WB_IR   <= #2 EX_MEM_IR ;
